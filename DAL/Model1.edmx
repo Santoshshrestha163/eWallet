@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EwalletDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblCategory1">
+          <Key>
+            <PropertyRef Name="Categoryid" />
+          </Key>
+          <Property Name="Categoryid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Categoryname" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tblmerchants">
+          <Key>
+            <PropertyRef Name="Merchantid" />
+          </Key>
+          <Property Name="Merchantid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Categoryid" Type="int" />
+          <Property Name="Merchantname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Usertype" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fullname" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_tblmerchants_tblCategory1">
+          <End Role="tblCategory1" Type="Self.tblCategory1" Multiplicity="0..1" />
+          <End Role="tblmerchants" Type="Self.tblmerchants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory1">
+              <PropertyRef Name="Categoryid" />
+            </Principal>
+            <Dependent Role="tblmerchants">
+              <PropertyRef Name="Categoryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EwalletDBModelStoreContainer">
+          <EntitySet Name="tblCategory1" EntityType="Self.tblCategory1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblmerchants" EntityType="Self.tblmerchants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblmerchants_tblCategory1" Association="Self.FK_tblmerchants_tblCategory1">
+            <End Role="tblCategory1" EntitySet="tblCategory1" />
+            <End Role="tblmerchants" EntitySet="tblmerchants" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EwalletDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Usertype" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fullname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="EwalletDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+          <EntitySet Name="tblCategory1" EntityType="EwalletDBModel.tblCategory1" />
+          <EntitySet Name="tblmerchants" EntityType="EwalletDBModel.tblmerchant" />
+          <AssociationSet Name="FK_tblmerchants_tblCategory1" Association="EwalletDBModel.FK_tblmerchants_tblCategory1">
+            <End Role="tblCategory1" EntitySet="tblCategory1" />
+            <End Role="tblmerchant" EntitySet="tblmerchants" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblCategory1">
+          <Key>
+            <PropertyRef Name="Categoryid" />
+          </Key>
+          <Property Name="Categoryid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Categoryname" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="tblmerchants" Relationship="EwalletDBModel.FK_tblmerchants_tblCategory1" FromRole="tblCategory1" ToRole="tblmerchant" />
+        </EntityType>
+        <EntityType Name="tblmerchant">
+          <Key>
+            <PropertyRef Name="Merchantid" />
+          </Key>
+          <Property Name="Merchantid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Categoryid" Type="Int32" />
+          <Property Name="Merchantname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblCategory1" Relationship="EwalletDBModel.FK_tblmerchants_tblCategory1" FromRole="tblmerchant" ToRole="tblCategory1" />
+        </EntityType>
+        <Association Name="FK_tblmerchants_tblCategory1">
+          <End Type="EwalletDBModel.tblCategory1" Role="tblCategory1" Multiplicity="0..1" />
+          <End Type="EwalletDBModel.tblmerchant" Role="tblmerchant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory1">
+              <PropertyRef Name="Categoryid" />
+            </Principal>
+            <Dependent Role="tblmerchant">
+              <PropertyRef Name="Categoryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EwalletDBModelStoreContainer" CdmEntityContainer="EwalletDBEntities">
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="EwalletDBModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Usertype" ColumnName="Usertype" />
+                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCategory1">
+            <EntityTypeMapping TypeName="EwalletDBModel.tblCategory1">
+              <MappingFragment StoreEntitySet="tblCategory1">
+                <ScalarProperty Name="Categoryname" ColumnName="Categoryname" />
+                <ScalarProperty Name="Categoryid" ColumnName="Categoryid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblmerchants">
+            <EntityTypeMapping TypeName="EwalletDBModel.tblmerchant">
+              <MappingFragment StoreEntitySet="tblmerchants">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Merchantname" ColumnName="Merchantname" />
+                <ScalarProperty Name="Categoryid" ColumnName="Categoryid" />
+                <ScalarProperty Name="Merchantid" ColumnName="Merchantid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
